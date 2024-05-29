@@ -6,7 +6,7 @@ The **SSD-1306** is a popular driver chip used in small monochrome OLED displays
 I developed a developed a system for converting any bitmap image (JPG, PNG, etc.) to a format that can be displayed on the SSD-1306. This repo contains both the code to this system so you can use it yourself, and an explanation as to how it works with the SSD-1306.
 
 ## Getting Up and Running: Basic SSD-1306 Interfacing
-The [`ssd1306.py` module](./src/pico/ssd1306.py) provides an excellent class for interfacing with the SSD1306 via I2C. I did not write this code; in fact, I do not know who did as the file itself does not credit a developer. I found this file in [this video](https://www.youtube.com/watch?v=oaM80GyVIwA) but also in other areas online. I am unsure of the author.
+The [`ssd1306.py` module](./src/ssd1306.py) provides an excellent class for interfacing with the SSD1306 via I2C. I did not write this code; in fact, I do not know who did as the file itself does not credit a developer. I found this file in [this video](https://www.youtube.com/watch?v=oaM80GyVIwA) but also in other areas online. I am unsure of the author.
 
 With that loaded onto your MicroPython board (I am using a Raspberry Pi Pico, RP2040), you can display on the SSD-1306 OLED display like this:
 
