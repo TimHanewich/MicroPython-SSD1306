@@ -96,7 +96,7 @@ In python, added to a `bytearray`, that will print into a `str` that looks like 
 b'\x81B$\x18\x18$B\x81'
 ```
 
-We an extrapolate this understanding to broader examples. In the above simple example, the image neatly translated into 8 rows of 8 bits, each row representing a byte. For larger images, the same process occurs, sometimes there being multiple bytes per row or sometimes there even being a portion of a byte per row (from left to right, top to bottom).
+We an extrapolate this understanding to broader examples. In the above simple example, the image neatly translated into 8 rows of 8 bits, each row representing a byte. For images with widths in multiples of 8, this holds true, just with multiple bytes per row! For image sizes where the width is not a multiple of 8, padding is required (a more complicated process, not supported by the code in this repo).
 
 ### So how can I convert a JPG/PNG image I have to buffer representation?
 I wrote code for doing that! You can find that code as the `image_to_buffer` *def* in the [`convert.py` file](./src/convert.py). This code:
