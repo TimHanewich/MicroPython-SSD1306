@@ -12,7 +12,7 @@ display_width:int = 128
 display_height:int = 64
 oled = ssd1306.SSD1306_I2C(128, 64, i2c)
 
-def display(bg:bitgraphics.BitGraphic, x:int, y:int) -> None:
+def display(bg:bitgraphics.BitGraphic, x:int, y:int, show:bool = False) -> None:
 
     #loop
     for yt in range(0, bg.height):
@@ -31,13 +31,14 @@ def display(bg:bitgraphics.BitGraphic, x:int, y:int) -> None:
                 oled.pixel(pix_x, pix_y, 1)
 
     # show
-    oled.show()
+    if show:
+        oled.show()
 
 
 def type(txt:str) -> None:
 
+    # reset
     oled.fill(0)
-    oled.show()
 
     # collect all bitgraphics
     BGs:list[bitgraphics.BitGraphic] = []
@@ -60,4 +61,7 @@ def type(txt:str) -> None:
     for bg in BGs:
         display(bg, on_x, 0)
         on_x = on_x + bg.width
+
+    # show at the very end!
+    oled.show()
     
