@@ -99,5 +99,3 @@ def images_to_buffers(original_bitmaps_dir:str, output_dir:str, threshold:float 
 
         # print
         print("Finished converting '" + filename + "'!")
-
-images_to_buffers(r"C:\Users\timh\Downloads\oled\graphics\alphanumeric\bitmaps", r"C:\Users\timh\Downloads\oled\graphics\alphanumeric\64x64", resize=(64,64))
