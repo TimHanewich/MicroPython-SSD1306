@@ -36,4 +36,8 @@ class BitGraphic:
         # width and height
         self.width = obj["width"]
         self.height = obj["height"]
-            
+    
+    def from_file(self, path:str) -> None:
+        f = open(path, "r")
+        txt:str = f.read()
+        self.from_json(txt)
