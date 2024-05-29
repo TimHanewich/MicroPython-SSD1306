@@ -58,3 +58,19 @@ def image_to_BitGraphic(img_path:str, threshold:float = 0.5, resize:tuple[int, i
 
     # return!
     return ToReturn
+
+def images_to_BitGraphics(original_bitmaps_dir:str, output_dir:str, threshold:float = 0.5, resize:tuple[int, int] = None) -> None:
+    """Converts all bitmap images in a folder to a buffer in another file. Great for converting a group of bitmap images to various sizes, ready for display on SSD-1306."""
+
+    for filename in os.listdir(original_bitmaps_dir):
+        fullpath = os.path.join(original_bitmaps_dir, filename)
+        converted = image_to_BitGraphic(fullpath, resize=resize, threshold=threshold)
+        
+        # trim off the ".png" or ".jpg"
+        fn_only:str = filename[0:-4]
+        result_path = os.path.join(output_dir, fn_only + ".json")
+        f = open(result_path, "w")
+        f.write(converted.to_json())
+
+        # print
+        print("Finished converting '" + filename + "'!")
