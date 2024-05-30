@@ -111,9 +111,11 @@ class BitGraphicDisplay:
 
             # firstly, if center was provided as a float (between 0 and 1), they are specifying it as a percentage of the width and height. If it was an int, it is absolute
             if type(center[0] == float):
-                center[0] = int(round(center[0] * self._width, 0))
+                nc0 = int(round(center[0] * self._width, 0))
+                center = (nc0, center[1])
             if type(center[1] == float):
-                center[1] = int(round(center[1] * self._height, 0))
+                nc1 = int(round(center[1] * self._height, 0))
+                center = (center[0], nc1)
 
             # calculate center point
             asset_width:int = None
