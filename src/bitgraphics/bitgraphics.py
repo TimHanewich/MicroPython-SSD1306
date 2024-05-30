@@ -7,6 +7,11 @@ class BitGraphic:
         self.width:int = 0
         self.height:int = 0
 
+    def bit(self, x:int, y:int) -> bool:
+        """Returns the bit value for a given coordinate"""
+        bit_index:int = (y * self.width) + x
+        return self.bits[bit_index]
+
     def to_json(self) -> str:
 
         # assemble bits as 1's and 0's
@@ -54,40 +59,83 @@ class BitGraphicGroup:
         self.BitGraphics.append((bg, relative_x, relative_y))
 
     @property
-    def width(self) -> int:
-        
-        # find the left-most pixel
+    def left(self) -> int:
+        """Returns the left-most position (min x)"""
         left_most:int = None
         for bgp in self.BitGraphics:
             if left_most == None or bgp[1] < left_most:
                 left_most = bgp[1]
-            
-        # find the right-most pixel
+        return left_most
+    
+    @property
+    def right(self) -> int:
+        """Returns the right-most position (max x)"""
         right_most:int = None
         for bgp in self.BitGraphics:
             right:int = bgp[1] + bgp[0].width # x shift + width of the graphic
             if right_most == None or right > right_most:
                 right_most = right
-        
-        return right_most - left_most
+        return right_most
+
+    @property
+    def width(self) -> int:
+        """Returns the full width of the combined graphics"""
+        return self.right - self.left
     
     @property
-    def height(self) -> int:
-
-        # find the top-most pixel
+    def top(self) -> int:
+        """Returns the top-most position (min y)"""
         top_most:int = None
         for bgp in self.BitGraphics:
             if top_most == None or bgp[2] < top_most:
                 top_most = bgp[2]
-            
-        # find the bottom-most pixel
+        return top_most
+    
+    @property
+    def bottom(self) -> int:
+        """Returns the bottom-most position (max y)"""
         bottom_most:int = None
         for bgp in self.BitGraphics:
             bottom:int = bgp[2] + bgp[0].height # y shift + height of graphic
             if bottom_most == None or bottom > bottom_most:
                 bottom_most = bottom
+        return bottom_most
+    
+    @property
+    def height(self) -> int:
+        """Returns the full height of the combined graphics"""
+        return self.bottom - self.top
 
-        return bottom_most - top_most
+    def fuse(self) -> BitGraphic:
+        """Combines all BitGraphics into a single BitGraphic."""
+
+        ToReturn:BitGraphic = BitGraphic()
+        ToReturn.width = self.width
+        ToReturn.height = self.height
+        ToReturn.bits.clear()
+        
+        for y in range (self.top, self.bottom):
+            for x in range(self.left, self.right):
+
+                # declare a variable for what this bit will end up being
+                ThisBit:bool = False
+                
+                # is this pixel covered by a BitGraphic?
+                for bgp in self.BitGraphics:
+                    if x >= bgp[1] and x < bgp[1] + bgp[0].width and y >= bgp[2] and y < bgp[2] + bgp[0].height: # within the bounds
+                        relative_x:int = x - bgp[1]
+                        relative_y:int = y - bgp[2]
+                        value:bool = bgp[0].bit(relative_x, relative_y)
+                        if value:
+                            ThisBit = True # set to true if it is filled in
+
+                # add it!
+                ToReturn.bits.append(ThisBit)
+        
+        return ToReturn
+
+
+
 
 # Only if on pi
 if sys.platform == "rp2":
