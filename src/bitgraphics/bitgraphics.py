@@ -1,4 +1,5 @@
 import json
+import sys
 
 class BitGraphic:
     def __init__(self) -> None:
@@ -46,7 +47,7 @@ class BitGraphic:
 
 class BitGraphicGroup:
     def __init__(self) -> None:
-        self.BitGraphics:list[tuple[BitGraphic, int, int]] = []
+        self.BitGraphics:list[tuple[BitGraphic, int, int]] = [] # tuple of (BitGraphic, width, height)
 
     def add(self, bg:BitGraphic, relative_x:int, relative_y:int) -> None:
         self.BitGraphics.append((bg, relative_x, relative_y))
@@ -86,3 +87,42 @@ class BitGraphicGroup:
                 bottom_most = bottom
 
         return bottom_most - top_most
+
+# Only if on pi
+if sys.platform == "rp2":
+    import ssd1306
+    import machine
+
+    class BitGraphicDisplay:
+
+        def __init__(self, i2c:machine.I2C, width:int, height:int) -> None:
+            self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
+
+        def show(self) -> None:
+            self.oled.show()
+
+        def display(self, asset:BitGraphic|BitGraphicGroup, x:int, y:int) -> None:
+
+            if type(asset) == BitGraphic: #display single bit graphic
+                for yt in range(0, asset.height):
+                    for xt in range(0, asset.width):
+
+                        # determine index in the bits array
+                        BitIndex:int = (yt * asset.width) + xt
+
+                        # determine pixel position
+                        pix_x:int = x + xt
+                        pix_y:int = y + yt
+                        
+                        if asset.bits[BitIndex] == False:
+                            self.oled.pixel(pix_x, pix_y, 0)
+                        elif asset.bits[BitIndex] == True:
+                            self.oled.pixel(pix_x, pix_y, 1)
+            
+            elif type(asset) == BitGraphicGroup: # BitGraphicGroup
+                for bgp in asset.BitGraphics:
+                    self.display(bgp[0], x + bgp[1], y + bgp[2])
+
+
+
+    
