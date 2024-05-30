@@ -101,7 +101,7 @@ if sys.platform == "rp2":
         def show(self) -> None:
             self.oled.show()
 
-        def display(self, asset:BitGraphic|BitGraphicGroup, x:int, y:int, center:tuple[int, int] = None) -> None:
+        def display(self, asset:BitGraphic|BitGraphicGroup, x:int=None, y:int=None, center:tuple[int, int] = None) -> None:
 
             # if center was not null, calculate x and y automatically, centering on that point
             if center != None:
