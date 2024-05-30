@@ -50,6 +50,7 @@ class BitGraphicGroup:
         self.BitGraphics:list[tuple[BitGraphic, int, int]] = [] # tuple of (BitGraphic, width, height)
 
     def add(self, bg:BitGraphic, relative_x:int, relative_y:int) -> None:
+        """Add a BitGraphic to the group with a relative position to the group"""
         self.BitGraphics.append((bg, relative_x, relative_y))
 
     @property
