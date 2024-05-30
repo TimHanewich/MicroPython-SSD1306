@@ -77,7 +77,7 @@ class BitGraphicGroup:
 
     def add(self, bg:BitGraphic, relative_x:int, relative_y:int) -> None:
         """Add a BitGraphic to the group with a relative position to the group"""
-        self.BitGraphics.append((bg, relative_x, relative_y))
+        self.append((bg, relative_x, relative_y))
 
     @property
     def left(self) -> int:
@@ -167,131 +167,206 @@ class BitGraphicGroup:
 
 
 # Only if on pi
-#if sys.platform == "rp2":
-import ssd1306
-import machine
+if sys.platform == "rp2":
+    import ssd1306
+    import machine
 
-class BitGraphicDisplay:
+    class BitGraphicDisplay:
 
-    def __init__(self, i2c:machine.I2C, width:int, height:int) -> None:
-        self._width = width
-        self._height = height
-        self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
+        def __init__(self, i2c:machine.I2C, width:int, height:int) -> None:
+            self._width = width
+            self._height = height
+            self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
 
-    def show(self) -> None:
-        self.oled.show()
+        def show(self) -> None:
+            self.oled.show()
 
-    def display(self, bg:BitGraphic, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
+        def display(self, bg:BitGraphic, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
 
-        # if center was not null, calculate x and y automatically, centering on that point
-        if center != None:
+            # if center was not null, calculate x and y automatically, centering on that point
+            if center != None:
 
-            # firstly, if center was provided as a float (between 0 and 1), they are specifying it as a percentage of the width and height. If it was an int, it is absolute
-            if type(center[0] == float):
-                nc0 = int(round(center[0] * self._width, 0))
-                center = (nc0, center[1])
-            if type(center[1] == float):
-                nc1 = int(round(center[1] * self._height, 0))
-                center = (center[0], nc1)
+                # firstly, if center was provided as a float (between 0 and 1), they are specifying it as a percentage of the width and height. If it was an int, it is absolute
+                if type(center[0] == float):
+                    nc0 = int(round(center[0] * self._width, 0))
+                    center = (nc0, center[1])
+                if type(center[1] == float):
+                    nc1 = int(round(center[1] * self._height, 0))
+                    center = (center[0], nc1)
 
-            # calculate center point
-            x = center[0] - int(round(bg.width / 2, 0))
-            y = center[1] - int(round(bg.height / 2, 0))
+                # calculate center point
+                x = center[0] - int(round(bg.width / 2, 0))
+                y = center[1] - int(round(bg.height / 2, 0))
 
-        # display BitGraphic
-        for yt in range(0, bg.height):
-            for xt in range(0, bg.width):
+            # display BitGraphic
+            for yt in range(0, bg.height):
+                for xt in range(0, bg.width):
 
-                # determine index in the bits array
-                BitIndex:int = (yt * bg.width) + xt
+                    # determine index in the bits array
+                    BitIndex:int = (yt * bg.width) + xt
 
-                # determine pixel position
-                pix_x:int = x + xt
-                pix_y:int = y + yt
+                    # determine pixel position
+                    pix_x:int = x + xt
+                    pix_y:int = y + yt
+                    
+                    if bg.bits[BitIndex] == False:
+                        self.oled.pixel(pix_x, pix_y, 0)
+                    elif bg.bits[BitIndex] == True:
+                        self.oled.pixel(pix_x, pix_y, 1)
+        
+    class Typewriter:
+
+        def __init__(self) -> None:
+            self.characters:list[tuple[str, BitGraphic]] = [] # character, graphic pair
+
+            # set up all characters
+            bg_folder:str = "16x16/"
+            self.characters.append(("0", BitGraphic(path=bg_folder + "/0.json")))
+            self.characters.append(("1", BitGraphic(path=bg_folder + "/1.json")))
+            self.characters.append(("2", BitGraphic(path=bg_folder + "/2.json")))
+            self.characters.append(("3", BitGraphic(path=bg_folder + "/3.json")))
+            self.characters.append(("4", BitGraphic(path=bg_folder + "/4.json")))
+            self.characters.append(("5", BitGraphic(path=bg_folder + "/5.json")))
+            self.characters.append(("6", BitGraphic(path=bg_folder + "/6.json")))
+            self.characters.append(("7", BitGraphic(path=bg_folder + "/7.json")))
+            self.characters.append(("8", BitGraphic(path=bg_folder + "/8.json")))
+            self.characters.append(("9", BitGraphic(path=bg_folder + "/9.json")))
+            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
+            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
+            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
+            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
+            self.characters.append(("b", BitGraphic(path=bg_folder + "/b.json")))
+            self.characters.append(("c", BitGraphic(path=bg_folder + "/c.json")))
+            self.characters.append(("d", BitGraphic(path=bg_folder + "/d.json")))
+            self.characters.append(("e", BitGraphic(path=bg_folder + "/e.json")))
+            self.characters.append(("f", BitGraphic(path=bg_folder + "/f.json")))
+            self.characters.append(("g", BitGraphic(path=bg_folder + "/g.json")))
+            self.characters.append(("h", BitGraphic(path=bg_folder + "/h.json")))
+            self.characters.append(("i", BitGraphic(path=bg_folder + "/i.json")))
+            self.characters.append(("j", BitGraphic(path=bg_folder + "/j.json")))
+            self.characters.append(("k", BitGraphic(path=bg_folder + "/k.json")))
+            self.characters.append(("l", BitGraphic(path=bg_folder + "/l.json")))
+            self.characters.append(("m", BitGraphic(path=bg_folder + "/m.json")))
+            self.characters.append(("n", BitGraphic(path=bg_folder + "/n.json")))
+            self.characters.append(("o", BitGraphic(path=bg_folder + "/o.json")))
+            self.characters.append(("p", BitGraphic(path=bg_folder + "/p.json")))
+            self.characters.append(("q", BitGraphic(path=bg_folder + "/q.json")))
+            self.characters.append(("r", BitGraphic(path=bg_folder + "/r.json")))
+            self.characters.append(("s", BitGraphic(path=bg_folder + "/s.json")))
+            self.characters.append(("t", BitGraphic(path=bg_folder + "/t.json")))
+            self.characters.append(("u", BitGraphic(path=bg_folder + "/u.json")))
+            self.characters.append(("v", BitGraphic(path=bg_folder + "/v.json")))
+            self.characters.append(("w", BitGraphic(path=bg_folder + "/w.json")))
+            self.characters.append(("x", BitGraphic(path=bg_folder + "/x.json")))
+            self.characters.append(("y", BitGraphic(path=bg_folder + "/y.json")))
+            self.characters.append(("z", BitGraphic(path=bg_folder + "/z.json")))
+
+        def write(self, text:str, width:int, height:int) -> BitGraphic:
+            """Types text into a single BitGraphic."""
+
+            # list of all BitGraphics
+            ToReturn:BitGraphicGroup = BitGraphicGroup()
+            for c in text.lower():
+
+                # find appropriate one
+                CorrectBG:BitGraphic = None
+                for cbg in self.characters:
+                    if cbg[0].lower() == c.lower(): # validate it is the correct character
+                        if cbg[1].width == width and cbg[1].height == height: # validate the width and height match
+                            CorrectBG = cbg[1] # select the BitGraphic (at index 1)
                 
-                if bg.bits[BitIndex] == False:
-                    self.oled.pixel(pix_x, pix_y, 0)
-                elif bg.bits[BitIndex] == True:
-                    self.oled.pixel(pix_x, pix_y, 1)
+                # if there wasn't one that was found, throw an error
+                if CorrectBG == None:
+                    
+                    # raise an exception if we don't have that character
+                    raise Exception("BitGraphic of character '" + str(c) + "' and size '" + str(width) + "x" + str(height) + " was not found in the list of available BitGraphic characters in the Typewriter.")
+                    
+                    # make a blank one
+                    # CorrectBG = BitGraphic()
+                    # CorrectBG.from_blank(width, height)
+
+
+                # add it!
+                ToReturn.add(CorrectBG, ToReturn.width, 0)
+
+            # fuse and return
+            return ToReturn.fuse()
+
+else: # all other platforms (windows, linux, etc.)
     
-class Typewriter:
+    import PIL.Image
+    import os
 
-    def __init__(self) -> None:
-        self.characters:list[tuple[str, BitGraphic]] = [] # character, graphic pair
+    def image_to_BitGraphic(img_path:str, threshold:float = 0.5, resize:tuple[int, int] = None) -> BitGraphic:
+        """
+        Converts a bitmap image (JPG, PNG, etc.) to a BitGraphic.
+        
+        Parameters
+        ----------
+        img_path:str
+            The path to the image file.
+        threshold:float, optional
+            Defines how "dark" each RGB pixel has to be for it to be considered "filled in". Higher threshold values are more discriminating.
 
-        # set up all characters
-        bg_folder:str = "16x16/"
-        self.characters.append(("0", BitGraphic(path=bg_folder + "/0.json")))
-        self.characters.append(("1", BitGraphic(path=bg_folder + "/1.json")))
-        self.characters.append(("2", BitGraphic(path=bg_folder + "/2.json")))
-        self.characters.append(("3", BitGraphic(path=bg_folder + "/3.json")))
-        self.characters.append(("4", BitGraphic(path=bg_folder + "/4.json")))
-        self.characters.append(("5", BitGraphic(path=bg_folder + "/5.json")))
-        self.characters.append(("6", BitGraphic(path=bg_folder + "/6.json")))
-        self.characters.append(("7", BitGraphic(path=bg_folder + "/7.json")))
-        self.characters.append(("8", BitGraphic(path=bg_folder + "/8.json")))
-        self.characters.append(("9", BitGraphic(path=bg_folder + "/9.json")))
-        self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-        self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-        self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-        self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-        self.characters.append(("b", BitGraphic(path=bg_folder + "/b.json")))
-        self.characters.append(("c", BitGraphic(path=bg_folder + "/c.json")))
-        self.characters.append(("d", BitGraphic(path=bg_folder + "/d.json")))
-        self.characters.append(("e", BitGraphic(path=bg_folder + "/e.json")))
-        self.characters.append(("f", BitGraphic(path=bg_folder + "/f.json")))
-        self.characters.append(("g", BitGraphic(path=bg_folder + "/g.json")))
-        self.characters.append(("h", BitGraphic(path=bg_folder + "/h.json")))
-        self.characters.append(("i", BitGraphic(path=bg_folder + "/i.json")))
-        self.characters.append(("j", BitGraphic(path=bg_folder + "/j.json")))
-        self.characters.append(("k", BitGraphic(path=bg_folder + "/k.json")))
-        self.characters.append(("l", BitGraphic(path=bg_folder + "/l.json")))
-        self.characters.append(("m", BitGraphic(path=bg_folder + "/m.json")))
-        self.characters.append(("n", BitGraphic(path=bg_folder + "/n.json")))
-        self.characters.append(("o", BitGraphic(path=bg_folder + "/o.json")))
-        self.characters.append(("p", BitGraphic(path=bg_folder + "/p.json")))
-        self.characters.append(("q", BitGraphic(path=bg_folder + "/q.json")))
-        self.characters.append(("r", BitGraphic(path=bg_folder + "/r.json")))
-        self.characters.append(("s", BitGraphic(path=bg_folder + "/s.json")))
-        self.characters.append(("t", BitGraphic(path=bg_folder + "/t.json")))
-        self.characters.append(("u", BitGraphic(path=bg_folder + "/u.json")))
-        self.characters.append(("v", BitGraphic(path=bg_folder + "/v.json")))
-        self.characters.append(("w", BitGraphic(path=bg_folder + "/w.json")))
-        self.characters.append(("x", BitGraphic(path=bg_folder + "/x.json")))
-        self.characters.append(("y", BitGraphic(path=bg_folder + "/y.json")))
-        self.characters.append(("z", BitGraphic(path=bg_folder + "/z.json")))
+        Returns
+        -------
+        tuple
+            A tuple containing:
+            - bytes: The image data in bytes that can be loaded into a FrameBuffer in MicroPython.
+            - int: The width of the image.
+            - int: The height of the image.
+        """
+        
+        # create what we will return
+        ToReturn:BitGraphic = BitGraphic()
 
-    def write(self, text:str, width:int, height:int) -> BitGraphic:
-        """Types text into a single BitGraphic."""
+        # open image
+        i = PIL.Image.open(img_path)
 
-        # list of all BitGraphics
-        ToReturn:BitGraphicGroup = BitGraphicGroup()
-        for c in text.lower():
+        # resize if desired
+        if resize != None:
+            i = i.resize(resize)
 
-            # find appropriate one
-            CorrectBG:BitGraphic = None
-            for cbg in self.characters:
-                if cbg[0].lower() == c.lower(): # validate it is the correct character
-                    if cbg[1].width == width and cbg[1].height == height: # validate the width and height match
-                        CorrectBG = cbg[1] # select the BitGraphic (at index 1)
+        # record size
+        width, height = i.size
+        ToReturn.width = width
+        ToReturn.height = height
+
+        # calculate the threshold. In other words, the average RGB value that the pixel has to be below (filled in with darkness) to be considered "on" and above to be considered "off"
+        thresholdRGB:int = 255 - int(round(threshold * 255, 0))
+        
+        # get a list of individual bits for each pixel (True is filled in, False is not filled in)
+        ToReturn.bits.clear()
+        for y in range(0, height):
+            for x in range(0, width):
+                pix:tuple[int, int, int, int] = i.getpixel((x, y)) #[R,G,B,A]
+                
+                # determine, is this pixel solid (filled in BLACK) or not (filled in WHITE)?
+                filled:bool = False
+                if len(pix) == 3 or pix[3] > 0: # if there are only three values, it is a JPG, so there is now alpha channel. Evaluate the color. If the alpha channel, it is a PNG. If the alpha is set to 0, that means the pixel is invisible, so don't consider it. Just consider it as not being shown.
+                    avg:int = int(round((pix[0] + pix[1] + pix[2]) / 3, 0))
+                    if avg <= thresholdRGB: # it is dark
+                        filled = True
+
+                # add it to the list of bits
+                ToReturn.bits.append(filled)
+
+        # return!
+        return ToReturn
+
+    def images_to_BitGraphics(original_bitmaps_dir:str, output_dir:str, threshold:float = 0.5, resize:tuple[int, int] = None) -> None:
+        """Converts all bitmap images in a folder to a buffer in another file. Great for converting a group of bitmap images to various sizes, ready for display on SSD-1306."""
+
+        for filename in os.listdir(original_bitmaps_dir):
+            fullpath = os.path.join(original_bitmaps_dir, filename)
+            converted = image_to_BitGraphic(fullpath, resize=resize, threshold=threshold)
             
-            # if there wasn't one that was found, throw an error
-            if CorrectBG == None:
-                
-                # raise an exception if we don't have that character
-                raise Exception("BitGraphic of character '" + str(c) + "' and size '" + str(width) + "x" + str(height) + " was not found in the list of available BitGraphic characters in the Typewriter.")
-                
-                # make a blank one
-                # CorrectBG = BitGraphic()
-                # CorrectBG.from_blank(width, height)
+            # trim off the ".png" or ".jpg"
+            fn_only:str = filename[0:-4]
+            result_path = os.path.join(output_dir, fn_only + ".json")
+            f = open(result_path, "w")
+            f.write(converted.to_json())
 
-
-            # add it!
-            ToReturn.add(CorrectBG, ToReturn.width, 0)
-
-        # fuse and return
-        return ToReturn.fuse()
-
-
-
+            # print
+            print("Finished converting '" + filename + "'!")
 
