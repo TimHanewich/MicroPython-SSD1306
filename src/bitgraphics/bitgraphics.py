@@ -101,7 +101,19 @@ if sys.platform == "rp2":
         def show(self) -> None:
             self.oled.show()
 
-        def display(self, asset:BitGraphic|BitGraphicGroup, x:int, y:int) -> None:
+        def display(self, asset:BitGraphic|BitGraphicGroup, x:int, y:int, center_on:tuple[int, int] = None) -> None:
+
+            # if center_on was not null, calculate x and y automatically, centering on that point
+            asset_width:int = None
+            asset_height:int = None
+            if type(asset) == BitGraphic:
+                asset_width = asset.width
+                asset_height = asset.height
+            elif type(asset) == BitGraphicGroup:
+                asset_width = asset.width
+                asset_height = asset.height
+            x = center_on[0] - int(round(asset_width / 2, 0))
+            y = center_on[1] - int(round(asset_height / 2, 0))
 
             if type(asset) == BitGraphic: #display single bit graphic
                 for yt in range(0, asset.height):
