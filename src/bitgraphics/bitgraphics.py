@@ -90,64 +90,64 @@ class BitGraphicGroup:
         return bottom_most - top_most
 
 # Only if on pi
-#if sys.platform == "rp2":
-import ssd1306
-import machine
+if sys.platform == "rp2":
+    import ssd1306
+    import machine
 
-class BitGraphicDisplay:
+    class BitGraphicDisplay:
 
-    def __init__(self, i2c:machine.I2C, width:int, height:int) -> None:
-        self._width = width
-        self._height = height
-        self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
+        def __init__(self, i2c:machine.I2C, width:int, height:int) -> None:
+            self._width = width
+            self._height = height
+            self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
 
-    def show(self) -> None:
-        self.oled.show()
+        def show(self) -> None:
+            self.oled.show()
 
-    def display(self, asset:BitGraphic|BitGraphicGroup, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
+        def display(self, asset:BitGraphic|BitGraphicGroup, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
 
-        # if center was not null, calculate x and y automatically, centering on that point
-        if center != None:
+            # if center was not null, calculate x and y automatically, centering on that point
+            if center != None:
 
-            # firstly, if center was provided as a float (between 0 and 1), they are specifying it as a percentage of the width and height. If it was an int, it is absolute
-            if type(center[0] == float):
-                nc0 = int(round(center[0] * self._width, 0))
-                center = (nc0, center[1])
-            if type(center[1] == float):
-                nc1 = int(round(center[1] * self._height, 0))
-                center = (center[0], nc1)
+                # firstly, if center was provided as a float (between 0 and 1), they are specifying it as a percentage of the width and height. If it was an int, it is absolute
+                if type(center[0] == float):
+                    nc0 = int(round(center[0] * self._width, 0))
+                    center = (nc0, center[1])
+                if type(center[1] == float):
+                    nc1 = int(round(center[1] * self._height, 0))
+                    center = (center[0], nc1)
 
-            # calculate center point
-            asset_width:int = None
-            asset_height:int = None
-            if type(asset) == BitGraphic:
-                asset_width = asset.width
-                asset_height = asset.height
-            elif type(asset) == BitGraphicGroup:
-                asset_width = asset.width
-                asset_height = asset.height
-            x = center[0] - int(round(asset_width / 2, 0))
-            y = center[1] - int(round(asset_height / 2, 0))
+                # calculate center point
+                asset_width:int = None
+                asset_height:int = None
+                if type(asset) == BitGraphic:
+                    asset_width = asset.width
+                    asset_height = asset.height
+                elif type(asset) == BitGraphicGroup:
+                    asset_width = asset.width
+                    asset_height = asset.height
+                x = center[0] - int(round(asset_width / 2, 0))
+                y = center[1] - int(round(asset_height / 2, 0))
 
-        if type(asset) == BitGraphic: #display single bit graphic
-            for yt in range(0, asset.height):
-                for xt in range(0, asset.width):
+            if type(asset) == BitGraphic: #display single bit graphic
+                for yt in range(0, asset.height):
+                    for xt in range(0, asset.width):
 
-                    # determine index in the bits array
-                    BitIndex:int = (yt * asset.width) + xt
+                        # determine index in the bits array
+                        BitIndex:int = (yt * asset.width) + xt
 
-                    # determine pixel position
-                    pix_x:int = x + xt
-                    pix_y:int = y + yt
-                    
-                    if asset.bits[BitIndex] == False:
-                        self.oled.pixel(pix_x, pix_y, 0)
-                    elif asset.bits[BitIndex] == True:
-                        self.oled.pixel(pix_x, pix_y, 1)
-        
-        elif type(asset) == BitGraphicGroup: # BitGraphicGroup
-            for bgp in asset.BitGraphics:
-                self.display(bgp[0], x + bgp[1], y + bgp[2])
+                        # determine pixel position
+                        pix_x:int = x + xt
+                        pix_y:int = y + yt
+                        
+                        if asset.bits[BitIndex] == False:
+                            self.oled.pixel(pix_x, pix_y, 0)
+                        elif asset.bits[BitIndex] == True:
+                            self.oled.pixel(pix_x, pix_y, 1)
+            
+            elif type(asset) == BitGraphicGroup: # BitGraphicGroup
+                for bgp in asset.BitGraphics:
+                    self.display(bgp[0], x + bgp[1], y + bgp[2])
 
 
 
