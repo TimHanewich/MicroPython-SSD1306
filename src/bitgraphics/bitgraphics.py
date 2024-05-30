@@ -36,6 +36,16 @@ class BitGraphic:
         ToReturn = {"bits": bitsbin, "width": self.width, "height": self.height}
         return json.dumps(ToReturn)
     
+    def from_blank(self, width:int, height:int) -> None:
+        """Initializes blank slate with desired width and height"""
+        self.width = width
+        self.height = height
+        
+        # create enough bits to suffice
+        self.bits.clear()
+        for x in range(0, self.width * self.height):
+            self.bits.append(False)
+    
     def from_json(self, jsons:str) -> None:
 
         obj = json.loads(jsons)
@@ -267,8 +277,15 @@ class Typewriter:
             
             # if there wasn't one that was found, throw an error
             if CorrectBG == None:
+                
+                # raise an exception if we don't have that character
                 raise Exception("BitGraphic of character '" + str(c) + "' and size '" + str(width) + "x" + str(height) + " was not found in the list of available BitGraphic characters in the Typewriter.")
-            
+                
+                # make a blank one
+                # CorrectBG = BitGraphic()
+                # CorrectBG.from_blank(width, height)
+
+
             # add it!
             ToReturn.add(CorrectBG, ToReturn.width, 0)
 
