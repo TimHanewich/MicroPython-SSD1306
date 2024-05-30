@@ -152,7 +152,7 @@ if sys.platform == "rp2":
         def show(self) -> None:
             self.oled.show()
 
-        def display(self, asset:BitGraphic|BitGraphicGroup, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
+        def display(self, bg:BitGraphic, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
 
             # if center was not null, calculate x and y automatically, centering on that point
             if center != None:
@@ -166,36 +166,25 @@ if sys.platform == "rp2":
                     center = (center[0], nc1)
 
                 # calculate center point
-                asset_width:int = None
-                asset_height:int = None
-                if type(asset) == BitGraphic:
-                    asset_width = asset.width
-                    asset_height = asset.height
-                elif type(asset) == BitGraphicGroup:
-                    asset_width = asset.width
-                    asset_height = asset.height
-                x = center[0] - int(round(asset_width / 2, 0))
-                y = center[1] - int(round(asset_height / 2, 0))
+                x = center[0] - int(round(bg.width / 2, 0))
+                y = center[1] - int(round(bg.height / 2, 0))
 
-            if type(asset) == BitGraphic: #display single bit graphic
-                for yt in range(0, asset.height):
-                    for xt in range(0, asset.width):
+            # display BitGraphic
+            for yt in range(0, bg.height):
+                for xt in range(0, bg.width):
 
-                        # determine index in the bits array
-                        BitIndex:int = (yt * asset.width) + xt
+                    # determine index in the bits array
+                    BitIndex:int = (yt * bg.width) + xt
 
-                        # determine pixel position
-                        pix_x:int = x + xt
-                        pix_y:int = y + yt
-                        
-                        if asset.bits[BitIndex] == False:
-                            self.oled.pixel(pix_x, pix_y, 0)
-                        elif asset.bits[BitIndex] == True:
-                            self.oled.pixel(pix_x, pix_y, 1)
-            
-            elif type(asset) == BitGraphicGroup: # BitGraphicGroup
-                for bgp in asset.BitGraphics:
-                    self.display(bgp[0], x + bgp[1], y + bgp[2])
+                    # determine pixel position
+                    pix_x:int = x + xt
+                    pix_y:int = y + yt
+                    
+                    if bg.bits[BitIndex] == False:
+                        self.oled.pixel(pix_x, pix_y, 0)
+                    elif bg.bits[BitIndex] == True:
+                        self.oled.pixel(pix_x, pix_y, 1)
+        
 
 
 
