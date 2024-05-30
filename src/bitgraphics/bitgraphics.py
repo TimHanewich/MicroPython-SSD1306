@@ -41,3 +41,48 @@ class BitGraphic:
         f = open(path, "r")
         txt:str = f.read()
         self.from_json(txt)
+
+
+
+class BitGraphicGroup:
+    def __init__(self) -> None:
+        self.BitGraphics:list[tuple[BitGraphic, int, int]] = []
+
+    def add(self, bg:BitGraphic, relative_x:int, relative_y:int) -> None:
+        self.BitGraphics.append((bg, relative_x, relative_y))
+
+    @property
+    def width(self) -> int:
+        
+        # find the left-most pixel
+        left_most:int = None
+        for bgp in self.BitGraphics:
+            if left_most == None or bgp[1] < left_most:
+                left_most = bgp[1]
+            
+        # find the right-most pixel
+        right_most:int = None
+        for bgp in self.BitGraphics:
+            right:int = bgp[1] + bgp[0].width # x shift + width of the graphic
+            if right_most == None or right > right_most:
+                right_most = right
+        
+        return right_most - left_most
+    
+    @property
+    def height(self) -> int:
+
+        # find the top-most pixel
+        top_most:int = None
+        for bgp in self.BitGraphics:
+            if top_most == None or bgp[2] < top_most:
+                top_most = bgp[2]
+            
+        # find the bottom-most pixel
+        bottom_most:int = None
+        for bgp in self.BitGraphics:
+            bottom:int = bgp[2] + bgp[0].height # y shift + height of graphic
+            if bottom_most == None or bottom > bottom_most:
+                bottom_most = bottom
+
+        return bottom_most - top_most
