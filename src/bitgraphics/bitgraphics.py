@@ -104,16 +104,17 @@ if sys.platform == "rp2":
         def display(self, asset:BitGraphic|BitGraphicGroup, x:int, y:int, center:tuple[int, int] = None) -> None:
 
             # if center was not null, calculate x and y automatically, centering on that point
-            asset_width:int = None
-            asset_height:int = None
-            if type(asset) == BitGraphic:
-                asset_width = asset.width
-                asset_height = asset.height
-            elif type(asset) == BitGraphicGroup:
-                asset_width = asset.width
-                asset_height = asset.height
-            x = center[0] - int(round(asset_width / 2, 0))
-            y = center[1] - int(round(asset_height / 2, 0))
+            if center != None:
+                asset_width:int = None
+                asset_height:int = None
+                if type(asset) == BitGraphic:
+                    asset_width = asset.width
+                    asset_height = asset.height
+                elif type(asset) == BitGraphicGroup:
+                    asset_width = asset.width
+                    asset_height = asset.height
+                x = center[0] - int(round(asset_width / 2, 0))
+                y = center[1] - int(round(asset_height / 2, 0))
 
             if type(asset) == BitGraphic: #display single bit graphic
                 for yt in range(0, asset.height):
