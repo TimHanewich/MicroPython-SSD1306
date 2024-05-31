@@ -179,6 +179,9 @@ if sys.platform == "rp2":
             self._height = height
             self.oled = ssd1306.SSD1306_I2C(width, height, i2c)
 
+        def clear(self) -> None:
+            self.oled.fill(0)
+
         def show(self) -> None:
             self.oled.show()
 
