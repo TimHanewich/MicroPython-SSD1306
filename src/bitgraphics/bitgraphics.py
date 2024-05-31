@@ -77,7 +77,7 @@ class BitGraphicGroup:
 
     def add(self, bg:BitGraphic, relative_x:int, relative_y:int) -> None:
         """Add a BitGraphic to the group with a relative position to the group"""
-        self.append((bg, relative_x, relative_y))
+        self.BitGraphics.append((bg, relative_x, relative_y))
 
     @property
     def left(self) -> int:
