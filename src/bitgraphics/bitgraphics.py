@@ -170,6 +170,7 @@ class BitGraphicGroup:
 if sys.platform == "rp2":
     import ssd1306
     import machine
+    import json
 
     class BitGraphicDisplay:
 
@@ -220,46 +221,16 @@ if sys.platform == "rp2":
             self.characters:list[tuple[str, BitGraphic]] = [] # character, graphic pair
 
             # set up all characters
-            bg_folder:str = "16x16/"
-            self.characters.append(("0", BitGraphic(path=bg_folder + "/0.json")))
-            self.characters.append(("1", BitGraphic(path=bg_folder + "/1.json")))
-            self.characters.append(("2", BitGraphic(path=bg_folder + "/2.json")))
-            self.characters.append(("3", BitGraphic(path=bg_folder + "/3.json")))
-            self.characters.append(("4", BitGraphic(path=bg_folder + "/4.json")))
-            self.characters.append(("5", BitGraphic(path=bg_folder + "/5.json")))
-            self.characters.append(("6", BitGraphic(path=bg_folder + "/6.json")))
-            self.characters.append(("7", BitGraphic(path=bg_folder + "/7.json")))
-            self.characters.append(("8", BitGraphic(path=bg_folder + "/8.json")))
-            self.characters.append(("9", BitGraphic(path=bg_folder + "/9.json")))
-            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-            self.characters.append(("a", BitGraphic(path=bg_folder + "/a.json")))
-            self.characters.append(("b", BitGraphic(path=bg_folder + "/b.json")))
-            self.characters.append(("c", BitGraphic(path=bg_folder + "/c.json")))
-            self.characters.append(("d", BitGraphic(path=bg_folder + "/d.json")))
-            self.characters.append(("e", BitGraphic(path=bg_folder + "/e.json")))
-            self.characters.append(("f", BitGraphic(path=bg_folder + "/f.json")))
-            self.characters.append(("g", BitGraphic(path=bg_folder + "/g.json")))
-            self.characters.append(("h", BitGraphic(path=bg_folder + "/h.json")))
-            self.characters.append(("i", BitGraphic(path=bg_folder + "/i.json")))
-            self.characters.append(("j", BitGraphic(path=bg_folder + "/j.json")))
-            self.characters.append(("k", BitGraphic(path=bg_folder + "/k.json")))
-            self.characters.append(("l", BitGraphic(path=bg_folder + "/l.json")))
-            self.characters.append(("m", BitGraphic(path=bg_folder + "/m.json")))
-            self.characters.append(("n", BitGraphic(path=bg_folder + "/n.json")))
-            self.characters.append(("o", BitGraphic(path=bg_folder + "/o.json")))
-            self.characters.append(("p", BitGraphic(path=bg_folder + "/p.json")))
-            self.characters.append(("q", BitGraphic(path=bg_folder + "/q.json")))
-            self.characters.append(("r", BitGraphic(path=bg_folder + "/r.json")))
-            self.characters.append(("s", BitGraphic(path=bg_folder + "/s.json")))
-            self.characters.append(("t", BitGraphic(path=bg_folder + "/t.json")))
-            self.characters.append(("u", BitGraphic(path=bg_folder + "/u.json")))
-            self.characters.append(("v", BitGraphic(path=bg_folder + "/v.json")))
-            self.characters.append(("w", BitGraphic(path=bg_folder + "/w.json")))
-            self.characters.append(("x", BitGraphic(path=bg_folder + "/x.json")))
-            self.characters.append(("y", BitGraphic(path=bg_folder + "/y.json")))
-            self.characters.append(("z", BitGraphic(path=bg_folder + "/z.json")))
+            self.characters.append(("0", BitGraphic(jsons=json.dumps({"bits": "0000011111100000000011111111000000011111111110000001111111111000001111111111110000111110011111000011111001111100001111100111110000111110011111000011111001111100001111100111110000111111111111000001111111111000000111111111100000001111111100000000011111100000", "width": 16, "height": 16}))))
+            self.characters.append(("1", BitGraphic(jsons=json.dumps({"bits": "0000000011110000000000011111000000000011111100000000111111110000000011111111000000001111111100000000111111110000000111011111000000000001111100000000000111110000000000011111000000000001111100000000000111110000000000011111000000000001111100000000000111110000", "width": 16, "height": 16}))))
+            self.characters.append(("2", BitGraphic(jsons=json.dumps({"bits": "0000111111110000000111111111100000011111111111000011111111111100001111100111110000111110011111000000000011111100000000011111110000000011111110000000011111110000000011111110000000011111110000000001111111111100001111111111110000111111111111000011111111111100", "width": 16, "height": 16}))))
+            self.characters.append(("3", BitGraphic(jsons=json.dumps({"bits": "0000111111110000000111111111100000111111111110000011111111111100001111101111110000011111111111000000001111111000000000111111100000000111111111000000001111111100001111100111110000111110011111000011111111111100001111111111110000011111111110000000111111110000", "width": 16, "height": 16}))))
+            self.characters.append(("4", BitGraphic(jsons=json.dumps({"bits": "0000000011111000000000011111100000000011111110000000001111111000000001111111100000001111111110000000111111111000000111111111100000111111111100000011111111111100001111111111110000111111111111000011111111111100001111111111110000000000111110000000000011111000", "width": 16, "height": 16}))))
+            self.characters.append(("5", BitGraphic(jsons=json.dumps({"bits": "0000111111111100000111111111110000011111111111000001111111111100000111111100000000011111111100000011111111111000001111111111110000111111111111000000110001111100001111100111110000111110011111000011111111111100001111111111110000011111111110000000111111110000", "width": 16, "height": 16}))))
+            self.characters.append(("6", BitGraphic(jsons=json.dumps({"bits": "0000011111110000000011111111100000011111111111000011111111111100001111100111110000111111111100000011111111111000001111111111110000111111111111000011111001111100001111100111110000111111011111000011111111111100000111111111110000011111111110000000111111110000", "width": 16, "height": 16}))))
+            self.characters.append(("7", BitGraphic(jsons=json.dumps({"bits": "0011111111111100001111111111110000111111111111000011111111111100000000011111100000000001111100000000001111110000000000111110000000000111111000000000011111000000000001111100000000001111110000000000111111000000000011111000000000001111100000000000111110000000", "width": 16, "height": 16}))))
+            self.characters.append(("8", BitGraphic(jsons=json.dumps({"bits": "0000111111110000000111111111100000011111111110000001111111111000000111100111100000011111111110000001111111111000000011111111000000011111111110000011111111111100001111100111110000111110011111000011111111111100000111111111100000011111111110000000111111110000", "width": 16, "height": 16}))))
+            self.characters.append(("9", BitGraphic(jsons=json.dumps({"bits": "0000111111100000000111111111000000011111111110000011111111111000001111101111110000111110011111000011111011111100001111111111110000011111111111000001111111111100000001111111110000111110111110000011111111111000000111111111100000011111111100000000111111100000", "width": 16, "height": 16}))))
 
         def write(self, text:str, width:int, height:int) -> BitGraphic:
             """Types text into a single BitGraphic."""
