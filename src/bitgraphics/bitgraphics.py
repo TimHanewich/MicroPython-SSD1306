@@ -184,6 +184,12 @@ if sys.platform == "rp2":
 
         def display(self, bg:BitGraphic, x:int=None, y:int=None, center:tuple[int|float, int|float] = None) -> None:
 
+            # if  they did not specify either x,y or center, throw error
+            if (x == None or y == None) and center == None:
+                #raise Exception("You must specify either a fixed (x,y) point or a relative center point when displaying a BitGraphic! You specified neither.")
+                x = 0 # default to 0
+                y = 0 # default to 0
+
             # if center was not null, calculate x and y automatically, centering on that point
             if center != None:
 
