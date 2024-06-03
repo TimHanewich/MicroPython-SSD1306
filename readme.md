@@ -145,10 +145,9 @@ The buffer is "hard coded" within the code above. However, the binary data itsel
 ## Graphic Collections
 In this repo I am also providing pre-converted graphics that can be loaded directly into a `FrameBuffer` in MicroPython (to display on an SSD-1306). I am providing:
 - [A full alphanumeric set](./graphics/alphanumeric/bitmaps/) from [here](https://www.flaticon.com/packs/alphabet-and-numbers-11)
-    - [8x8](./graphics/alphanumeric/8x8/)
-    - [16x16](./graphics/alphanumeric/8x8/)
-    - [32x32](./graphics/alphanumeric/8x8/)
-    - [64x64](./graphics/alphanumeric/8x8/)
+    - [16x16](./graphics/alphanumeric/16x16/)
+    - [32x32](./graphics/alphanumeric/32x32/)
+    - [64x64](./graphics/alphanumeric/64x64/)
 
 ### Creating your own graphics collection
 You can use the `images_to_buffers` function of the [`convert.py` module](./src/convert.py). For example, to convert all bitmap images (i.e. PNG's) in the `bitmaps` folder to 64x64 buffer arrays in the `64x64` folder that can be loaded onto the SSD-1306:
