@@ -244,6 +244,17 @@ if sys.platform == "rp2":
             self.characters.append(("8", BitGraphic(jsond={"bits": "0000111111110000000111111111100000011111111110000001111111111000000111100111100000011111111110000001111111111000000011111111000000011111111110000011111111111100001111100111110000111110011111000011111111111100000111111111100000011111111110000000111111110000", "width": 16, "height": 16})))
             self.characters.append(("9", BitGraphic(jsond={"bits": "0000111111100000000111111111000000011111111110000011111111111000001111101111110000111110011111000011111011111100001111111111110000011111111111000001111111111100000001111111110000111110111110000011111111111000000111111111100000011111111100000000111111100000", "width": 16, "height": 16})))
 
+        def add_character(self, character:str, bg:BitGraphic) -> None:
+            
+            # check if we already have a pair with this character and this size
+            for cp in self.characters:
+                if cp[0].lower() == character.lower():
+                    if cp[1].width == bg.width and cp[1].height == bg.height:
+                        raise Exception("Typewriter already has BitGraphic of size " + str(bg.width) + "x" + str(bg.height) + " representing the character '" + str(character) + "'.")
+                    
+            # if we got here, we don't have it exactly! So add it.
+            self.characters.append((character, bg))
+
         def write(self, text:str, width:int, height:int) -> BitGraphic:
             """Types text into a single BitGraphic."""
 
