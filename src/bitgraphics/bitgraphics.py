@@ -46,9 +46,12 @@ class BitGraphic:
         for x in range(0, self.width * self.height):
             self.bits.append(False)
     
-    def from_json(self, jsons:str) -> None:
+    def from_json(self, jsons:str|dict) -> None:
 
-        obj = json.loads(jsons)
+        # convert if needed 
+        obj = jsons
+        if type(obj) == str:
+            obj = json.loads(obj)
 
         # deserialize bits
         self.bits.clear()
