@@ -253,7 +253,7 @@ if sys.platform == "rp2":
                         raise Exception("Typewriter already has BitGraphic of size " + str(bg.width) + "x" + str(bg.height) + " representing the character '" + str(character) + "'.")
                     
             # if we got here, we don't have it exactly! So add it.
-            self.add_character(character, bg))
+            self.add_character(character, bg)
 
         def write(self, text:str, width:int, height:int) -> BitGraphic:
             """Types text into a single BitGraphic."""
