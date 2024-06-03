@@ -107,9 +107,9 @@ I wrote code for doing that! You can find that code as the `image_to_buffer` *de
 5. Converts each group of 8 bits into a byte.
 6. Collects these converted bytes and returns them to you - ready to be shown on the SSD-1306 display!
 
-For example, I made a simple 128x64 (128 pixels wide, 64 pixels high) JPG image in Paint [here](./hello_world.jpg):
+For example, I made a simple 128x64 (128 pixels wide, 64 pixels high) JPG image in Paint [here](./graphics/hello_world.jpg):
 
-![hello world](./hello_world.jpg)
+![hello world](./graphics/hello_world.jpg)
 
 To convert this to a buffer representation that can be loaded into the SSD-1306:
 
