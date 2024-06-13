@@ -46,7 +46,7 @@ def image_to_buffer(img_path:str, threshold:float = 0.5, resize:tuple[int, int] 
             filled:bool = False
             if len(pix) == 3 or pix[3] > 0: # if there are only three values, it is a JPG, so there is now alpha channel. Evaluate the color. If the alpha channel, it is a PNG. If the alpha is set to 0, that means the pixel is invisible, so don't consider it. Just consider it as not being shown.
                 avg:int = int(round((pix[0] + pix[1] + pix[2]) / 3, 0))
-                if avg <= thresholdRGB: # it is dark
+                if avg >= thresholdRGB: # it is bright (so fill it with an on pixel)
                     filled = True
 
             # add it to the list of bits
