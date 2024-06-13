@@ -36,7 +36,7 @@ def image_to_buffer(img_path:str, threshold:float = 0.5, resize:tuple[int, int] 
     width, height = i.size
 
     # calculate the threshold. In other words, the average RGB value that the pixel has to be below (filled in with darkness) to be considered "on" and above to be considered "off"
-    thresholdRGB:int = 255 - int(round(threshold * 255, 0))
+    thresholdRGB:int = min(max(int(round(threshold * 255, 0)), 0), 255)
     
     # get a list of individual bits for each pixel (True is filled in, False is not filled in)
     bits:list[bool] = []
